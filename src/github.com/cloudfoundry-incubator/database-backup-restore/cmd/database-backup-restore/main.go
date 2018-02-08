@@ -39,6 +39,12 @@ func main() {
 
 	utilitiesConfig := config.GetUtilitiesConfigFromEnv()
 
+	tempFolderManager, err := config.NewTempFolderManager()
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+	defer tempFolderManager.Cleanup()
+
 	interactor, err := makeInteractor(flags.IsRestore, utilitiesConfig, connectionConfig)
 	if err != nil {
 		log.Fatalf("%v", err)
