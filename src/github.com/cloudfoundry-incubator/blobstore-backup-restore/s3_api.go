@@ -59,3 +59,25 @@ func (s3Api S3Api) DeleteObject(bucketName, file string) error {
 
 	return err
 }
+
+func (s3Api S3Api) ListObjectVersions(bucketName string) ([]Version, error) {
+	output, err := s3Api.s3Client.ListObjectVersions(&s3.ListObjectVersionsInput{
+		Bucket: aws.String(bucketName),
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	var versions []Version
+	for _, v := range output.Versions {
+		version := Version{
+			Key:      *v.Key,
+			Id:       *v.VersionId,
+			IsLatest: *v.IsLatest,
+		}
+		versions = append(versions, version)
+	}
+
+	return versions, nil
+}

@@ -87,14 +87,14 @@ var _ = Describe("S3Bucket", func() {
 				})
 			})
 
-			Context("when retrieving versions fails", func() {
+			FContext("when retrieving versions fails", func() {
 				BeforeEach(func() {
 					bucketObjectUnderTest = NewS3Bucket("aws", versionedBucketName, mainRegion, endpoint, S3AccessKey{})
 				})
 
 				It("returns the error", func() {
 					Expect(versions).To(BeNil())
-					Expect(err).To(MatchError(ContainSubstring("An error occurred")))
+					Expect(err).To(MatchError(ContainSubstring("failed to retrieve versions from bucket")))
 				})
 			})
 
